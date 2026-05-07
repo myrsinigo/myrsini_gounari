@@ -1,93 +1,163 @@
-# myrsini_gounari
+#  Variant Analysis of Human Trio (Chromosome 20)
 
+##  Overview
 
-# Hi, I'm Myrsini :-)
+This project implements an end-to-end variant calling pipeline on Illumina sequencing data from a family trio (father, mother, and child). The workflow includes quality control, 
+read trimming, alignment, duplicate removal, variant calling, and visualization, focusing on a target region of chromosome 20.
 
-A Physicist with unlimited curiosity who holds a master in Bioinformatics & experience as Data Engineer.
-I build scalable data pipelines and computational tools for analyzing biological data.
+-------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------
+##  Objective
 
-## About Me ##
+Identify SNPs and INDELs in the region:
 
-*  Data Engineer
-*  MSc in Bioinformatics & Neuroinformatics (2026)
-*  BSc in Physics (2019)
-*  Interested in genomics, data pipelines, and reproducible research
-*  Combining data engineering with biological data analysis
+**chr20:10,018,000–10,220,000**
 
+and analyze inheritance patterns across the trio.
 
-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
-## Tech Stack ##
+##  Dataset
 
-**Programming**
-Python, R, Bash, SQL, Matlab, C/C++ (little bit)
+* Source: Public training dataset (Illumina paired-end reads)
+* Samples:
 
-**Bioinformatics Tools**
-BLAST, Bioconductor, NCBI, Ensembl, UniProt, Samtools
+  * Father
+  * Mother
+  * Child
+* Format: FASTQ
 
-**Data Engineering**
-ETL Pipelines, Splunk, Google Chronicle, Cribl, Next-Gen SIEM Crowdstrike
+> Note: No sensitive or personal human data is included.
 
-**Other**
-Linux, Git, Workflow Automation, Database Design
+-------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------
+##  Tools & Technologies
 
-##  Bioinformatics Projects
+* FastQC – Quality control
+* fastp – Adapter trimming and filtering
+* Bowtie2 – Read alignment
+* SAMtools – BAM processing and indexing
+* GATK – Duplicate marking
+* FreeBayes – Variant calling
+* IGV – Visualization
+* MultiQC – Aggregated QC reporting
 
-###  Genomic Data Anonymization Tool
+-------------------------------------------------------------------------------------
 
-*  Privacy-preserving genomic data processing (MSc Thesis)
-*  Python, Bash, Samtools, Google Cloud
-*  Focus on secure sharing of genomic datasets
+##  Pipeline Overview
 
-------------------------------------------------------------------------------------------
+```
+FASTQ → QC → Trimming → Alignment → BAM processing → Duplicate removal → Variant calling → Visualization
+```
 
-###  RNA-seq Analysis Pipeline *(planned / in progress)*
+### Steps:
 
-*  End-to-end pipeline: QC → alignment → quantification → differential expression
-*  FastQC, HISAT2/STAR, featureCounts, DESeq2
-*  Reproducible workflow using Bash / Snakemake
+1. Quality control of raw reads using FastQC
+2. Adapter trimming and filtering using fastp
+3. Post-trimming QC
+4. Reference genome indexing
+5. Alignment using Bowtie2 with read groups
+6. BAM sorting and indexing
+7. Duplicate marking using GATK
+8. Merging BAM files
+9. Variant calling using FreeBayes (target region only)
+10. Visualization in IGV
+11. QC summary using MultiQC
 
-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
-###  Variant Calling Pipeline *(planned)*
+##  Results
 
-*  Process raw sequencing data to identify genetic variants
-*  BWA, Samtools, GATK
-*  Output: VCF analysis and visualization
+* Adapter contamination detected in raw reads and successfully removed after trimming
+* High-quality reads retained after filtering
+* Duplicate reads identified and removed
+* Variants detected in the target region
 
-------------------------------------------------------------------------------------------
+### Variant Summary *(update with your values)*:
 
-###  Network Biomarker Analysis
+* Total variants: XXXX
+* SNPs: XXXX
+* INDELs: XXXX
 
-*  Graph-based approach to identify disease biomarkers (Alzheimer’s)
-*  Python, Network Analysis
+-------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------
+##  Analysis & Insights
 
-##  What I Focus On
+* Adapter trimming significantly improved read quality
+* Duplicate reads can introduce bias in variant calling and were removed
+* Read groups were added to distinguish samples during joint analysis
+* Variant quality assessed using metrics such as depth (DP) and quality score (QUAL)
+* Trio analysis enabled comparison of inheritance patterns across samples
 
-* Scalable bioinformatics pipelines
-* Large-scale biological data processing
-* Reproducibility & workflow automation
-* Integrating data engineering with life sciences
+-------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------
+##  Visualization
 
-##  Currently Learning
+Variants and alignments were inspected using IGV for validation.
 
-* Analysis of NGS data
-* ML/Deep learning
-  
+> Example region analyzed:
+> **chr20:10,026,397–10,026,638**
 
-------------------------------------------------------------------------------------------
+(Screenshots available in `results/igv/`)
 
-##  Contact Me
+-------------------------------------------------------------------------------------
 
-* LinkedIn: https://www.linkedin.com/in/maria-myrsini-gounari-900357118/
-* Email: gounari.myrsini@gmail.com
+##  How to Run
 
+### 1. Download data
+
+```bash
+wget https://ngs-introduction-training.s3.eu-central-1.amazonaws.com/project1.tar.gz
+tar -xvf project1.tar.gz
+```
+
+### 2. Run pipeline
+
+```bash
+bash scripts/01_download_data.sh
+bash scripts/02_run_fastqc.sh
+bash scripts/03_trim_reads.sh
+bash scripts/04_align_reads.sh
+bash scripts/05_variant_calling.sh
+```
+
+---
+
+##  Project Structure
+
+```
+├── data/          # Input data (not included or minimal)
+├── scripts/       # Pipeline scripts
+├── results/       # QC reports, VCFs, summaries, screenshots
+├── README.md
+```
+
+-------------------------------------------------------------------------------------
+
+##  Limitations
+
+* Analysis restricted to a small genomic region
+* Training dataset used
+* No clinical or functional validation performed
+
+-------------------------------------------------------------------------------------
+
+##  Future Work
+
+* Add variant annotation (ClinVar, COSMIC)
+* Automate workflow using Snakemake or Nextflow
+* Extend to whole-genome or cancer datasets
+* Perform functional impact analysis of variants
+
+-------------------------------------------------------------------------------------
+
+##  Key Skills Demonstrated
+
+* NGS data processing
+* Variant calling pipelines
+* Linux and Bash scripting
+* Bioinformatics tool integration
+* Data interpretation and visualization
+
+-------------------------------------------------------------------------------------
 
